@@ -18,7 +18,7 @@ spec:
         app: newdep
     spec:
       containers:
-      - image: nginx
+      - image: busybox
         name: nginx
         command: sleep
         args: 300
