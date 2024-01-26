@@ -48,5 +48,5 @@ jobs:
         uses: azure/k8s-deploy@v4
         with:
           action: deploy
-          manifests: "src/**"
+          manifests: "src/aksfiles/**"
           azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
