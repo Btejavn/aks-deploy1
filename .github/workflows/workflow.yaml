@@ -48,5 +48,6 @@ jobs:
         uses: azure/k8s-deploy@v4
         with:
           action: deploy
-          manifests: "src/terraform/**"
+          manifests: 
+           .github/workloads/depl1.yaml
           azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
