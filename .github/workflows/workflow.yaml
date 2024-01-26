@@ -1,0 +1,52 @@
+name: aks-deploy
+
+on:
+  push:
+    branches:
+      - main
+    # Remove or adjust paths if needed
+    #paths:
+      #- "src/**"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: "dev-azure"
+
+    steps:
+      - name: Get application k8s manifests from repo
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v3.0
+        with:
+          version: 'latest'
+
+      - name: Set the target Azure Kubernetes Service (AKS) cluster.
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          cluster-name: "aks-free-eastus-1"
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+
+      - name: Set environment variable
+        env:
+          ACRNAME: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        run: |
+          export ACRNAME
+
+      - name: Azure Kubernetes Service
+        uses: azure/k8s-deploy@v4
+        with:
+          action: deploy
+          manifests: "src/**"
+          azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
