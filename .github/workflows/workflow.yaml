@@ -3,7 +3,7 @@ name: aks-deploy
 on:
   push:
     branches:
-      - main
+      - mai
     # Remove or adjust paths if needed
     #paths:
       #- "src/**"
