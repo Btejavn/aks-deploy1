@@ -1,0 +1,22 @@
+name: Verify Azure Credentials
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-credentials:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Verify Azure credentials
+        run: az account show
